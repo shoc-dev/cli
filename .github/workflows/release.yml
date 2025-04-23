@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    if: github.repository == 'shoc/cli'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm i
+
+      - name: Install jq
+        uses: dcarbone/install-jq-action@v3.0.1
+
+      - name: Dry run
+        id: dry-run
+        run: |
+          npx semantic-release --dry-run --no-ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Extract Next Version
+        id: version
+        run: |
+          set -e
+          # Run semantic-release dry-run and capture version if available after the specific phrase
+          NEXT_VERSION=$(npx semantic-release --dry-run --no-ci 2>/dev/null | grep -oP '(?<=[Tt]he next release version is )\d+(\.\d+){2,}' || true)
+          if [ -z "$NEXT_VERSION" ]; then
+            echo "No new version to release. Skipping release."
+            echo "SKIP_RELEASE=true" >> $GITHUB_ENV
+          else
+            echo "NEXT_VERSION=$NEXT_VERSION" >> $GITHUB_ENV
+            echo "SKIP_RELEASE=false" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+
+      - name: See extracted version
+        run: |
+          echo "NEXT_VERSION=${{ env.NEXT_VERSION }}"
+          echo "SKIP_RELEASE=${{ env.SKIP_RELEASE }}" 
+     
+      - name: Update package.json with version
+        if: env.SKIP_RELEASE == 'false'
+        run: |
+          jq --arg version "$NEXT_VERSION" '.version = $version' package.json > temp.json && mv temp.json package.json
+        env:
+          NEXT_VERSION: ${{ env.NEXT_VERSION }}
+
+      - name: Install Dependencies (Updated Version)
+        if: env.SKIP_RELEASE == 'false'
+        run: pnpm i
+
+      - name: Build
+        if: env.SKIP_RELEASE == 'false'
+        run: pnpm build
+
+      - name: Release
+        if: env.SKIP_RELEASE == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
+
+      - name: No Release Needed
+        if: env.SKIP_RELEASE == 'true'
+        run: echo "No version to release. Pipeline completed successfully."

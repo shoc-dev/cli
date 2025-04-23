@@ -1,6 +1,6 @@
 {
-  "name": "shoc",
-  "version": "1.0.0",
+  "name": "@shoc/shoc",
+  "version": "0.0.0-development",
   "type": "module",
   "description": "Run your jobs on Shoc Platform via Shoc CLI.",
   "publishConfig": {
@@ -11,17 +11,24 @@
     "name": "davitp",
     "url": "https://github.com/davitp"
   },
+  "bugs": {
+    "url": "https://github.com/shoc-dev/cli/issues"
+  },
+  "homepage": "https://github.com/shoc-dev/cli#readme",
   "files": [
     "dist"
   ],
   "main": "index.tss",
   "exports": "./dist/index.js",
-  "bin": "./dist/index.js",
+  "bin": {
+    "shoc": "./dist/index.js"
+  },  
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup"
+    "build": "tsup",
+    "semantic-release": "semantic-release"
   },
-  "keywords": [],
+  "keywords": ["shoc", "HPC", "ML", "AI", "MPI", "Kubernetes", "OpenMPI", "TensorFlow", "PyTorch"],
   "dependencies": {
     "@dotenvx/dotenvx": "^1.41.0",
     "archiver": "^7.0.1",
@@ -44,6 +51,13 @@
     "yaml": "^2.7.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "semantic-release": "^24.2.1",
     "@types/archiver": "^6.0.3",
     "@types/figlet": "^1.7.0",
     "@types/git-url-parse": "^9.0.3",
