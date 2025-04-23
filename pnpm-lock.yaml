@@ -100,7 +100,7 @@ importers:
         specifier: ^2.4.9
         version: 2.4.9
       semantic-release:
-        specifier: ^24.2.1
+        specifier: ^24.2.3
         version: 24.2.3(typescript@5.8.3)
       tsup:
         specifier: ^8.4.0
