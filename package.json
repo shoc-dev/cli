@@ -29,6 +29,7 @@
     "semantic-release": "semantic-release"
   },
   "keywords": ["shoc", "HPC", "ML", "AI", "MPI", "Kubernetes", "OpenMPI", "TensorFlow", "PyTorch"],
+  "packageManager": "pnpm@10.9.0",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.41.0",
     "archiver": "^7.0.1",
