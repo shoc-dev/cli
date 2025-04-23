@@ -7,7 +7,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    if: github.repository == 'shoc/cli'
+    if: github.repository == 'shoc-dev/cli'
 
     runs-on: ubuntu-latest
 
