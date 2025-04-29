@@ -51,6 +51,7 @@ export async function getBuildListing(context: BuildContext, manifest: BuildMani
             withFileTypes: true
         }
     );
+    
     const buildEntries: BuildFileEntry[] = [];
 
     for(const file of list){
