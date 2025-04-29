@@ -9,7 +9,7 @@ import crypto from "crypto"
 import os from "os";
 import archiver from "archiver";
 
-const DEFAULT_IGNORE_PATTERNS = ['**/.git/**', '**/node_modules/**']
+const DEFAULT_IGNORE_PATTERNS = ['**/.git/**', '**/node_modules/**', "**/run.shoc.yaml", "**/run.shoc.yml"]
 const DEFAULT_TEMP_DIR = 'shoc-temp'
 const ZIP_FILENAME_SIZE = 16
 
@@ -51,7 +51,6 @@ export async function getBuildListing(context: BuildContext, manifest: BuildMani
             withFileTypes: true
         }
     );
-
     const buildEntries: BuildFileEntry[] = [];
 
     for(const file of list){

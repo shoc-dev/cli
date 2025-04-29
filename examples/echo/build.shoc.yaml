@@ -1,0 +1,3 @@
+template: alpine:default
+spec:
+  entrypoint: ["./main.sh"]
