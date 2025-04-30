@@ -14,7 +14,7 @@ import ora, { oraPromise } from "ora";
 
 export default async function build(context: ResolvedContext, buildContext: BuildContext) : Promise<{ packageId: string }> {
     
-    buildContext.authenticatedContext ?? await oraPromise(getAuthenticatedContext(context.providerUrl), {
+    buildContext.authenticatedContext ?? await oraPromise(getAuthenticatedContext(context), {
         text: 'Validating user authentication',
         successText: res => `🔑 Authenticated by ${chalk.bold(res.session.name)} at ${chalk.bold(buildContext.workspace)}`,
         failText: err => `Could not authenticate: ${chalk.red(err.message)}` 

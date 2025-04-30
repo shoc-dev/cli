@@ -11,10 +11,10 @@ interface ClientContext {
 
 export default async function clientGuard(context: ResolvedContext, action: (ctx: ClientContext) => Promise<any>) {
 
-    const auth = await getAuthenticatedContext(context.providerUrl);
+    const auth = await getAuthenticatedContext(context);
 
     try {
-        return (await action({ apiRoot: context.providerUrl.toString(), token: auth.accessToken })).data
+        return (await action({ apiRoot: context.apiUrl.toString(), token: auth.accessToken })).data
     }
     catch (error) {
         throw transformError(error)
@@ -24,7 +24,7 @@ export default async function clientGuard(context: ResolvedContext, action: (ctx
 export async function anonymousClientGuard(context: ResolvedContext, action: (ctx: ClientContext) => Promise<any>) {
 
     try {
-        return (await action({ apiRoot: context.providerUrl.toString() })).data
+        return (await action({ apiRoot: context.apiUrl.toString() })).data
     }
     catch (error) {
         throw transformError(error)

@@ -10,7 +10,7 @@ type ApiConfig = {
 export function shocApiConfig(apiRoot: string): ApiConfig {
     return {
         root: apiRoot,
-        gateway: 'api/fwd-direct',
+        gateway: '',
         serviceRouting: true,
         client: 'cli',
         timeout: 60000

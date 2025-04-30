@@ -1,8 +1,7 @@
-import { AuthenticatedContext, AuthSession } from '@/core/types';
+import { AuthenticatedContext, AuthSession, ResolvedContext } from '@/core/types';
 import keytar from 'keytar'
 import { decodeJwt } from 'jose'
 import { refresh, TokenResult } from './authorize';
-import { getWellKnownEndpoints } from './context-resolver';
 
 const ACCESS_TOKEN_KEY = 'shoc_access_token';
 const REFRESH_TOKEN_KEY = 'shoc_refresh_token';
@@ -43,9 +42,9 @@ export async function clearSession(providerUrl: string): Promise<void> {
     await keytar.deletePassword(providerUrl, REFRESH_TOKEN_KEY);
 }
 
-export async function getAuthenticatedContext(providerUrl: URL): Promise<AuthenticatedContext> {
+export async function getAuthenticatedContext(context: ResolvedContext): Promise<AuthenticatedContext> {
 
-    const providerUrlString = providerUrl.toString();
+    const providerUrlString = context.providerUrl.toString();
     const session = await checkSession(providerUrlString);
     const accessToken = await keytar.getPassword(providerUrlString, ACCESS_TOKEN_KEY);
     const refreshToken = await keytar.getPassword(providerUrlString, REFRESH_TOKEN_KEY);
@@ -66,7 +65,7 @@ export async function getAuthenticatedContext(providerUrl: URL): Promise<Authent
         throw Error('Your session has expired. Please login again.')
     }
 
-    const { idp } = await getWellKnownEndpoints(new URL(providerUrl));
+    const idp = context.identityUrl;
 
     let refreshed: TokenResult | null = null;
 

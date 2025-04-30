@@ -1,4 +1,4 @@
-import resolveContext, { getWellKnownEndpoints } from "@/services/context-resolver";
+import resolveContext from "@/services/context-resolver";
 import { createCommand } from "commander";
 import { asyncHandler, getRootOptions } from "@/commands/common";
 import { authorize } from "../../services/authorize";
@@ -13,9 +13,7 @@ authLoginCommand
 
         const context = await resolveContext(getRootOptions(cmd));
 
-        const { idp } = await getWellKnownEndpoints(context.providerUrl);
-
-        const { accessToken, refreshToken } = await authorize({ idp })
+        const { accessToken, refreshToken } = await authorize({ idp: context.identityUrl })
 
         storeSession(context.providerUrl.toString(), { accessToken, refreshToken })
         logger.success(`You have been successfully authenticated.`);

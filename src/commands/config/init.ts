@@ -7,6 +7,8 @@ import { asyncHandler } from "../common";
 
 const configInitCommand = createCommand('init')
 
+const GLOBAL_ROOT = 'https://shoc.dev';
+
 configInitCommand
     .description('Initialize the configuration')
     .action(asyncHandler(async (options) => {
@@ -18,8 +20,10 @@ configInitCommand
             return;
         }
 
+        const endpoints = await (await fetch(`${GLOBAL_ROOT}/well-known/endpoints`)).json();
+
         const config: Config = {
-            providers: [{ name: 'global', url: 'https://shoc.dev' }],
+            providers: [{ name: 'global', url: GLOBAL_ROOT, api: endpoints.api, identity: endpoints.idp }],
             contexts: [],
             defaultContext: 'default',
         };

@@ -30,10 +30,18 @@ export default async function resolveContext(options: RootOptions): Promise<Reso
         throw new Error(`The provider ${provider.name} has invalid URL (${provider.url})`);
     }
 
+    if(!URL.canParse(provider.api)){
+        throw new Error(`The provider ${provider.name} has invalid API URL (${provider.api})`);
+    }
+
+    if(!URL.canParse(provider.identity)){
+        throw new Error(`The provider ${provider.name} has invalid Identity URL (${provider.identity})`);
+    }
+
     let resolvedDir = dir ?? process.cwd()
 
     if(resolvedDir.endsWith('/')){
-        resolvedDir.substring(0, resolvedDir.length - 1)
+        resolvedDir = resolvedDir.substring(0, resolvedDir.length - 1)
     }
 
     if(!fs.existsSync(resolvedDir)){
@@ -48,20 +56,9 @@ export default async function resolveContext(options: RootOptions): Promise<Reso
         name: ctx.name,
         providerName: provider.name,
         providerUrl: new URL(provider.url),
+        apiUrl: new URL(provider.api),
+        identityUrl: new URL(provider.identity),
         workspace: workspace ?? ctx.workspace,
         dir: resolvedDir
     };
-}
-
-export async function getWellKnownEndpoints(providerUrl: URL): Promise<{ idp: URL, api: URL }> {
-
-    const endpointsUrl = new URL(providerUrl);
-    endpointsUrl.pathname = '/well-known/endpoints';
-    
-    const result = (await axios.get(endpointsUrl.toString())).data;
-
-    return {
-        idp: new URL(result.idp),
-        api: new URL(result.api)
-    }
 }

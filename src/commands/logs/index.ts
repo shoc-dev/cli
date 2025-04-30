@@ -29,15 +29,19 @@ logsCommand.description('Watch logs of the job tasks')
 
         const { url: logsUrl, token } = await clientGuard(context, (ctx) => shocClient(ctx.apiRoot, WorkspaceJobTasksClient).getLogsBySequenceUrl(ctx.token, workspace.id, job.id, task));
         
-        await getLogs(logsUrl, token)
+        try {
+            await getLogs(logsUrl, token)
+        }
+        catch(e: any){
+            logger.error(`Unable to read logs: ${e.message}`)
+        }
     }));
 
 async function getLogs(logsUrl: string, token: string) {
-
     const response = await fetch(logsUrl, {
         headers: {
             'x-shoc-sse': 'yes',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
     });
     if (!response.ok) {

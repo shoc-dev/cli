@@ -14,7 +14,7 @@ import { mapArgs, mapArray, mapEnv, mapResources, mapSpec } from "./mappers";
 
 export default async function run(context: ResolvedContext, runContext: RunContext) : Promise<{ }> {
     
-    const authenticatedContext = await oraPromise(getAuthenticatedContext(context.providerUrl), {
+    const authenticatedContext = await oraPromise(getAuthenticatedContext(context), {
         text: 'Validating user authentication',
         successText: res => `🔑 Authenticated by ${chalk.bold(res.session.name)} at ${chalk.bold(runContext.workspace)}`,
         failText: err => `Could not authenticate: ${chalk.red(err.message)}` 
