@@ -1,0 +1,3 @@
+template: mpi:default
+spec:
+  entrypoint: ["./main.sh"]
