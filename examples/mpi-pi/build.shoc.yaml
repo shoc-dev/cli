@@ -1,0 +1,4 @@
+template: mpi:default
+spec:
+  make: all
+  entrypoint: ["./pi"]
