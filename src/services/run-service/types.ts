@@ -25,6 +25,18 @@ export interface RunManifestResources {
 }
 
 export interface RunManifestSpecMpi {
+    launcher: RunManifestSpecMpiLauncher,
+    workers: RunManifestSpecMpiWorkers
+}
+
+export interface RunManifestSpecMpiLauncher {
+    dedicated: boolean
+    resources: RunManifestResources
+}
+
+export interface RunManifestSpecMpiWorkers {
+    replicas: number
+    resources: RunManifestResources
 }
 
 export interface RunManifestSpec {

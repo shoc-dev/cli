@@ -1,1 +1,13 @@
 cluster: self
+spec:
+  mpi:
+    launcher:
+      dedicated: true
+    #   resources: 
+    #     cpu: 2
+    #     memory: 800Mi
+    workers:
+      resources:
+        cpu: 1
+        memory: 40Mi
+  
