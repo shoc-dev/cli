@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/shoc-dev/cli/compare/v1.0.2...v1.0.3) (2025-06-22)
+
+
+### Bug Fixes
+
+* bump versions ([47719dd](https://github.com/shoc-dev/cli/commit/47719dd1575922caf7ddfcdbccee8345aab4af53))
+* **mpi:** fix the handling of resources before sending to the server ([b28f0cb](https://github.com/shoc-dev/cli/commit/b28f0cbb363e2797d15245fb7dcf64dee400d4de))
+
 ## [1.0.2](https://github.com/shoc-dev/cli/compare/v1.0.1...v1.0.2) (2025-04-30)
 
 
