@@ -1,1 +1,9 @@
 cluster: self
+
+spec:
+  mpi:
+    workers:
+      replicas: 1
+      resources:
+        cpu: 1000m
+        memory: 1Gi
