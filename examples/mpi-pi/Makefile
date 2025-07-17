@@ -1,4 +1,4 @@
 all: pi
 
 pi: pi.cc
-	mpicc -o pi pi.cc
+	mpic++ -lm -o pi pi.cc
